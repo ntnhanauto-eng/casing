@@ -809,16 +809,13 @@ window.exportExcel = function() {
         });
     });
 
-data.push({
-    "Tàu": "TỔNG",
-    "Ngày": "",
-    "Số người": data.reduce((sum, r) => sum + r["Số người"], 0),
-    "Công việc": ""
-});
+    data.push({
+        "Tàu": "TỔNG",
+        "Ngày": "",
+        "Số người": data.reduce((sum, r) => sum + r["Số người"], 0),
+        "Công việc": ""
+    });
 
-
-
-    
     if(data.length === 0){
         alert("Không có dữ liệu để xuất!");
         return;
@@ -828,7 +825,33 @@ data.push({
     let wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "BaoCao");
 
-    XLSX.writeFile(wb, "BaoCao_Loc.xlsx");
+    let wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+
+    let blob = new Blob([wbout], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    });
+
+    let url = URL.createObjectURL(blob);
+
+    // 🔥 TẠO LINK MỚI MỖI LẦN
+    let a = document.createElement("a");
+    a.href = url;
+    a.download = "BaoCaoCasing_" + Date.now() + ".xlsx"; // tránh trùng tên
+    a.style.display = "none";
+
+    document.body.appendChild(a);
+
+    // 🔥 BẮT BUỘC dùng setTimeout cho mobile
+    setTimeout(() => {
+        a.click();
+
+        // cleanup sau khi click
+        setTimeout(() => {
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }, 1000);
+
+    }, 100);
 }
 
 
