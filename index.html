@@ -215,25 +215,34 @@ h2 {
     min-width: 0;
 }      
 
-/* Hiệu ứng khi focus */
+input, select {
+    width: 100%;
+    margin: 8px 0;
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+
+    transition: all 0.25s ease; /* mượt */
+}
+
+/* 🟢 Khi focus */
 input:focus, select:focus {
-    border-color: #1a73e8;
-    background: #e8f0fe;
-    outline: none;
-    box-shadow: 0 0 5px rgba(26,115,232,0.3);
-    transition: all 0.2s ease;
-}
-
-/* Khi đã nhập dữ liệu */
-input.filled, select.filled {
-    background: #e6f4ea;
     border-color: #34a853;
+    background: #f0fff4;
+    box-shadow: 0 0 6px rgba(52,168,83,0.4);
+    outline: none;
 }
 
-/* Khi lỗi (trống mà blur) */
+/* 🔴 Khi lỗi */
 input.error, select.error {
     border-color: #ccc;     /* giống bình thường */
     background: #fff;       /* bỏ màu đỏ */
+}
+
+/* ⚪ Bình thường */
+input, select {
+    background: #fff;
 }
 .btn-save {
     width: auto;
@@ -408,10 +417,13 @@ input.error, select.error {
         <input type="date" id="toDate">
     </div>
 </div>
-  
+   <div class="flex" style="margin-top: 10px;">
+    <input type="text" id="jobFilter" placeholder="Tìm tên công việc...">
+</div>
 
 <!-- Hàng mới -->
 <div class="filter-row">
+   
     <select id="sortType">
         <option value="desc">📅 Mới nhất trước</option>
         <option value="asc">📅 Cũ nhất trước</option>
@@ -423,9 +435,7 @@ input.error, select.error {
     
 </div>
          
-   <div class="flex" style="margin-top: 10px;">
-    <input type="text" id="jobFilter" placeholder="Tìm tên công việc...">
-</div>
+ 
 </div>
 
     <div class="card">
@@ -941,20 +951,21 @@ function handleInputState(el) {
 
 // Áp dụng cho toàn bộ input + select
 document.querySelectorAll("input, select").forEach(el => {
-    // Khi nhập
-    el.addEventListener("input", () => handleInputState(el));
 
-    // Khi rời khỏi ô (blur)
+    // Khi blur (rời khỏi ô)
     el.addEventListener("blur", () => {
         if (el.value.trim() === "") {
             el.classList.add("error");
+        } else {
+            el.classList.remove("error");
         }
     });
 
-    // Khi focus thì bỏ error
+    // Khi focus → bỏ lỗi
     el.addEventListener("focus", () => {
         el.classList.remove("error");
     });
+
 });
 
    window.handleButton = function(type) {
