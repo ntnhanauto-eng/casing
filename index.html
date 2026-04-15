@@ -819,6 +819,7 @@ input, select {
     <button id="btnProgress" class="admin-only" onclick="handleButton('progress')">📌 Nhập tiến độ tàu</button>
      <button id="btnChecklist" class="admin-only" onclick="handleButton('checklist')">📋 Mục kiểm tra</button>
     <button id="btnExtra" onclick="handleButton('extra')">📦 Vật tư & Ghi chú</button>
+    <button class="admin-only" onclick="renderAdminPermission()">Phân quyền User</button>
 </div>
         
         <div id="summary" style="display:none; margin-top:15px;"></div>
@@ -2376,6 +2377,17 @@ function updateDashboardTitle() {
 setInterval(() => {
     renderTableUI();
 }, 300000); // 🔥 refresh highlight mỗi 1 phút
+
+
+    // Thêm hàm này vào cuối file JS để cập nhật giao diện khi vừa login
+function updateAdminUI() {
+    const adminButtons = document.querySelectorAll(".admin-only");
+    if (isAdmin) {
+        adminButtons.forEach(btn => btn.style.display = "block");
+    } else {
+        adminButtons.forEach(btn => btn.style.display = "none");
+    }
+}
     
 </script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
